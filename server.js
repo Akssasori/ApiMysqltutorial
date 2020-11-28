@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 
 const db = require("./app/models");
-db.Sequelize.sync({ force : true}).then(()=>{
+db.sequelize.sync({ force : true}).then(()=>{
     console.log("Drop and re-sync db");
 });
 
