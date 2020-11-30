@@ -26,5 +26,7 @@ module.exports = app => {
     //delete all
     router.delete("/", tutorials.deleteAll);
 
+    router.get("/many", tutorials.insertMany);
+
     app.use('/api/tutorials', router);
 };

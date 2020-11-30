@@ -1,3 +1,4 @@
+const { sequelize } = require("../models");
 const db = require("../models");
 const Tutorial = db.tutorials;
 const Op = db.Sequelize.Op;
@@ -145,4 +146,79 @@ exports.findAllPublished = (req, res) => {
     });
 };
 
+
+exports.insertMany = (req,res) =>{
+
+    // if(!req.body.title){
+    //     res.status(400).send({
+    //         message: "Não pode ser vazio o campo!"
+    //     });
+    //     return;
+    // }
+    // var notes = [
+    //         {
+    //             'title': 'lucas90',
+    //             'description':'sera que foi',
+    //             'published': true
+    //         },
+    //         {
+    //             'title': 'lucas100',
+    //             'description': 'sera que foi',
+    //             'published': true
+    //         }
+    //     ];
+    // notes.create(tutorial)
+    // .then(data => {
+    //     res.send(data);
+    // })
+    // .catch(err => {
+    //     res.status(500).send({
+    //         message:
+    //         err.message || "Algum erro ocorreu ao salvar"
+    //     });
+    // });
+
+
+    let Note = sequelize.define('notes',{
+        
+        title:{
+            type:Sequelize.STRING
+        },
+        description: {
+            type: Sequelize.STRING
+        },
+        published: {
+            type: Sequelize.BOOLEAN
+        }
+
+    });
+    var notes = [
+        {
+            'title': 'lucas90',
+            'description':'sera que foi',
+            'published': true
+        },
+        {
+            'title': 'lucas100',
+            'description': 'sera que foi',
+            'published': true
+        }
+    ];
+
+    sequelize.sync({ force : true }).then(() => {
+
+        Note.bulkCreate(notes, { validate: true }).then(() => {
+            console.log('acoes criadas')
+        }).catch((err) => {
+            console.log('falhou ao criar as acoes');
+            console.log(err);
+        }).finally(() => {
+            sequelize.close();
+        });
+        console.log(notes)
+        
+    });
+
+
+};
 
